@@ -1,0 +1,11 @@
+See INSTALL for installation instructions. On systems with the GNU autoconf/automake system:
+
+./configure
+make
+(su)
+make install-strip
+
+should do it.
+
+
+

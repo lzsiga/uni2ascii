@@ -1,0 +1,40 @@
+Egmont Koblinger and John McGowan
+     Pointed out bug in uni2ascii that caused a segfault if no command-line
+     flag was given.
+
+Egmont Koblinger
+     Suggested adding <U00E9> format.
+
+     Suggested adding a means of specifying additional formats on the
+     command line.
+
+Dan Jacobson
+    Various suggestions for improvements and reports of bugs in the documentation
+    and help messages.
+
+    Several bug reports.
+
+Cedric Luthi
+       Proposed and sent patch for additions to expansions of single
+       characters.
+
+Jesse Peterson
+      Patch adding conversions in version 4.4.
+
+Chung-Chieh Shan
+     Reported bug in  Get_UTF32_From_UTF8 that incorrectly treated an
+     interrupted read in the midst of a UTF-8 sequence as a truncated sequence.
+
+Dylan Thurston
+     Patched Get_UTF32_From_UTF8 to fix the bug reported by Chung-Chieh Shan.
+
+Huan Truong
+     Reported problem with spurious breaks after very long lines in ascii2uni.
+
+Bruce Janson
+     Reported bugs with lines ending in = and suggested adaptation to RFC2045
+     deletion of line-final equal-sign and the following newline.
+
+Stephen Markenka
+     Suggested adding option of skipping ill-formed UTF-8 rather than aborting.
+

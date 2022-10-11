@@ -1,0 +1,45 @@
+You can test ascii2uni by giving it this file as input and
+varying the conversion flag.  For example, the command:
+
+	ascii2uni -A < TestSuiteAscii2Uni
+
+should reproduce this file except for the fact that <U00E9>
+will be replaced with lower-case e with acute accent.
+All of the characters in the right-hand column should be
+lower-case e with acute accent when converted with the exception
+of the L: row, which should be a mathematical bold upper-case A.
+
+A:	<U00E9>
+B:	\x00E9
+C:	\x{00E9}
+D:	&#0233;
+E:	U00E9
+F:	u00E9
+G:	X'00E9'
+H:	&#x00E9;
+I:	=C3=A9
+J:	%C3%A9
+K:	\303\251
+L:	\U0001D400
+M:	\#x00E9;
+N:	\#233;
+O:	\000\000\351
+P:	U+00E9
+Q:	&eacute;
+S:	\x00\x00\xe9
+T:	\d000\d000\d233
+U:	\u00E9
+V:	\u00233
+X:	0x00E9
+0:	<C3><A9>
+1:	#x00E9
+2:	v233
+3:	$00E9
+4:	16#00E9
+5:	#16r00E9
+6:	16#00E9#
+7:	\xC3\xA9
+8:	_x00E9_
+9:	%u00E9
+Hm:      &#x00E9
+

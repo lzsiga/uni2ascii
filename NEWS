@@ -1,0 +1,64 @@
+2009-08-04 4.14
+Fixed a bug that interfered with the use of the Q format in uni2ascii.
+Fixed bug in which ascification of U+2502 and U+2503 added double quote to output.
+Fixed a bug in which -a S option generated a "Converted so many chars" line for each
+character due to leaving in debugging code.
+
+2009-04-22 4.13
+Fixed Debian bug #511527 which caused the count of characters converted
+to ASCII by uni2ascii to be excessive.</li>
+
+2009-03-25 4.12
+Both programs now allow the input file name to be specified on the command
+line without redirection.
+
+2008-10-02 4.11
+Added support for %uXXXX format.
+Added support for <XX><XX> format.
+
+2008-08-30 version 4.10
+Fixed bug that made Y argument to -a flag in ascii2uni a no-op.
+Added documentation for Y argument to -a flag to man page for ascii2uni.
+Corrected documentation for Q argument to -a flag in man page for ascii2uni.
+The help flag for both programs now provides correct information about the
+    Q argument to the -a flag.
+Giving Y as the argument to the -a flag is now an error for uni2ascii.
+The action summary is now more informative. The new version is incompatible
+    with u2a, which I am no longer updating. The old action summary can be
+    chosen at configuration time by using the option --disable-newsummary.
+More informative version information is now provided.
+
+2008-05-06 version 4.9
+Fixed bug that produced bad output or segfault if a line
+ended in the prefix to an escape, e.g. just an =-sign
+in quoted-printable format.
+
+In quoted-printable format if a line ends in an =-sign,
+both the equal sign and the following newline are skipped
+in accordance with RFC2045.
+
+2008-05-04 version 4.8
+Fixes serious bug in ascii2uni due to inclusion in release of test version.
+
+2008-04-26 version 4.7
+Added -P option to pass through untransformed Unicode.
+Added -B option as shorthand for defxy.
+Added characters to -e and -x options (see ChangeLog for details).
+Since hardly anyone seems to use it, the GUI u2a is no longer being developed.
+
+2008-03-25 version 4.6
+Replaced fgets call with GNU getline so as to handle arbitrarily long input lines.
+Added support for OOXML format (e.g. _x00E9_).
+Fixed bug affecting BYTEQ, BYTED, and BYTEH formats.
+
+2008-03-20 version 4.5
+Error messages now include the line number.
+
+Microsoft-style HTML entities lacking final semi-colon are now
+passed on by default rather than converted. The new -m flag
+causes them to be converted.
+
+2008-01-14 version 4.4
+Added -y option for single-character ascii approximations
+as per patch provided by Jesse Peterson (jesse.peterson@exbiblio.com)
+Changed license to GPL v.3

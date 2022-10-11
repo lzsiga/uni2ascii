@@ -1,0 +1,22 @@
+Add support for:
+    backslash escapes (\t etc.)
+    trigraphs
+---
+Probably the way to provide the option requested for Debian of passing over
+ill-formed utf-8 characters is to handle this within UTF8in.
+---
+Add test suite.
+---
+Add base64, uuencode, ascii85, binhex
+---
+Flow control is too complicated now. Need to package so as to make it comprehensible.
+Also check memory usage with valgrind.
+___
+Need to finish adding HDML support to ascii2uni.
+---
+Add to web page and documentation explanation of the relationship between these
+programs and encoding converters.
+
+
+
+

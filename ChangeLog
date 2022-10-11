@@ -1,0 +1,453 @@
+2009-08-04  Bill Poser  <poser@bill-laptop>
+	Release of version 4.14.
+	
+	* uni2ascii.c SetFormat.c:
+	Now set escape type to hexadecimal HTML numeric reference in Q option
+	rather than incorrect CHENT.
+
+2009-05-11  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* uni2ascii.c: 
+	Fixed bug in which ascification of U+2502 and U+2503 added double quote to output.
+
+2009-04-22  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* ascii2uni.c:
+	Fixed a bug in which -a S option generated a "Converted so many chars" line
+	for each character due to leaving in debugging code.
+	
+2009-04-21  Bill Poser  <poser@khunekcho.khunek.poser.org>
+	Release of version 4.13
+	
+	* uni2ascii.c: 
+	Fixed bug that caused excessive number of characters changed to ASCII to be
+	reported.
+
+2009-03-25  Bill Poser  <poser@khunekcho.khunek.poser.org>
+	Release of version 4.12
+
+	* uni2ascii.c ascii2uni.c: 
+	The input file may now be specified on the command line without redirection.
+
+2008-10-02  Bill Poser  <poser@khunekcho.khunek.poser.org>
+	Release of version 4.11.
+	
+	* ascii2uni.c uni2ascii.c SetFormat.c formats.h:
+	Added support for <XX><XX> format.
+	
+2008-09-27  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* ascii2uni.c uni2ascii.c SetFormat.c formats.h:
+	Added support for %uXXXX format.
+	
+2008-08-30  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* SetFormat.c (SetFormat): 
+	Added setting of *Ftype to CHENT in Y case. This fixes bug in which Y was a no-op.
+
+	* ascii2uni.1:
+	Added documentation for Y argument to -a flag.
+	Corrected documentation for Q argument to -a flag.
+	
+	* SetFormat.c: 
+	Modified ListFormatArguments to give slightly different explanations for Q
+	according to the direction of the conversion.
+
+	* uni2ascii.c (main): 
+	Made Y argument to -a flag illegal.
+
+2008-07-30  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* ascii2uni.c uni2ascii.c: 
+	Switched to more informative ShowVersion and
+	separated out Copyright().
+
+2008-06-03  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* uni2ascii.c:
+	Shifted to new, more detailed action summary. Due to
+	incompatibility with u2a, which I am no longer updating,
+	the old action summary can be chosen at configuration time
+	by using the option --disable-newsummary.
+
+2008-05-06  Bill Poser  <poser@khunekcho.khunek.poser.org>	
+	Release of version 4.9
+	
+2008-05-04  Bill Poser  <poser@khunekcho.khunek.poser.org>
+	* ascii2uni.c: 
+	Fixed bug that produced bad output or segfault if a line
+	ended in the prefix to an escape, e.g. just an =-sign
+	in quoted-printable format.
+
+	In quoted-printable format if a line ends in an =-sign,
+	both the equal sign and the following newline are skipped
+	in accordance with RFC2045.
+	
+2008-05-04  Bill Poser  <poser@khunekcho.khunek.poser.org>
+	
+	* ascii2uni.c: 
+
+	Release of version 4.8
+	
+	Restored correct version of ascii2uni.c. Version 4.7 was
+	inadvertently released with the 4.5 version of ascii2uni
+	with a constant set much too low for testing purposes.
+	Release 4.8 has ascii2uni.c with getline as in 4.6,
+	with the unnecessary strlen call eliminated.
+
+2008-04-26  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* uni2ascii.c (main): 
+	Added option -P which passes through Unicode rather than converting
+	to an escape if it is not transformed. This is intended to allow
+	options like diacritic stripping to be used followed by another program.
+	
+	Added option -B which transforms to ASCII if possible. It is equivalent
+	to the combination defxy.
+
+	Added expansion of ligatures U+FB00,U+FB01,U+FB02,U+FB03,U+FB04, U+FB06 to -x option.
+
+	Added conversion of U+00AF, U+2215, U+2216, U+2223 to -e option.
+
+2008-04-02  Bill Poser  <poser@khunekcho.khunek.poser.org>
+	* ascii2uni.c:
+	Eliminated unnecessary strlen call now that we're using getline.
+	
+2008-04-02  Bill Poser  <poser@khunekcho.khunek.poser.org>
+	Release of version 4.6.
+	
+	* ascii2uni.c: 
+	Replaced fgets call with GNU getline so as to handle arbitrarily
+	long input lines.
+
+2008-03-25  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* uni2ascii.c (main): 
+	Added support for OOXML format.
+	Fixed bug affecting BYTEQ, BYTED, and BYTEH formats.
+
+	* ascii2uni.c:
+	Added support for OOXML format.
+	
+2008-03-20  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* ascii2uni.c:
+	Release of version 4.5
+	Error messages now include the line number.
+
+	Microsoft-style HTML entities lacking final semi-colon are now
+	passed on by default rather than converted. The new -m flag
+	causes them to be converted.
+
+2008-03-19  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* ascii2uni.c (main): 
+	Initialized FType to STDX, fixing bug arising when user fails
+	to specify type on command line.
+
+2008-03-10  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* ascii2uni.c: 
+	Corrected FSF address in header as per bug report by Kartik Mistry.
+	Made minor improvements in man pages as per patch by Kartik Mistry.
+
+2008-01-14  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* uni2ascii.c: 
+	Added -y option for single-character ascii approximations
+	as per patch provided by Jesse Peterson (jesse.peterson@exbiblio.com)
+	Changed license to GPL v.3
+
+2007-08-07  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* ascii2uni.c (main): 
+	Version 4.3.2
+	Fixed bug that deleted blank lines in certain cases.
+	Removed obsolete -8 flag from usage message.
+
+2007-03-11  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* uni2ascii.c (main): 
+	Added ability to define custom substitutions and deletions.
+
+	Added 0x2500-0x2503 to -e flag.
+
+2007-03-02  Bill Poser  <poser@khunekcho.khunek.poser.org>
+	Released version 4.2
+	
+	* SetFormat.c: 
+	Added some format names. 
+	Added missing pattern matches for examples of I, J, and K formats.
+	Added return of error code for unrecognized format spec, with tests
+	   in both uni2ascii and ascii2uni.
+
+2007-03-01  Bill Poser  <poser@khunekcho.khunek.poser.org>
+	Released version 4.1.1
+	
+	* ascii2uni.c uni2ascii.c:
+	Removed inadertently introduced direct calls to gettext.
+	These will prevent compilation on systems without gettext.
+
+2007-02-26  Bill Poser  <poser@khunekcho.khunek.poser.org>
+	Released version 4.1
+	
+	* TestSuiteAscii2Uni:
+	Added entries for missing formats.
+
+	* ascii2uni.c: 
+	Removed leftover format spec info from ShowUsage();
+	Fixed bugs bugs that screwed up several conversions.
+
+2007-02-22  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* u2a.tcl (ExplainExpansions): 
+	Added information about new expansions.
+
+	* uni2ascii.c: 
+	Corrected typos in usage info.
+	Moved list of expansions from general info to its own info flag.
+	Added expansions proposed and implemented by Cedric Luthi.
+
+2007-02-20  Bill Poser  <poser@localhost>
+
+	* u2a.tcl: 
+	Modified to handle new method of specifying formats.
+
+2007-02-14  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* ascii2uni.c uni2ascii.c:
+	Fixed bug introduced in 3.10 in which an HTML numeric character reference
+	lacking the final semi-colon led to the program not termiminating.
+
+	Added check to Z flag argument to make sure that user supplied formats
+	do not contain more than one conversion specification.
+
+	Replaced the numerous format options with arguments to the
+	-a flag.
+
+2007-02-13  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* uni2ascii.c (main): 
+	Replaced the numerous format options with arguments to the
+	-a flag.
+
+2007-02-10  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* uni2ascii.c ascii2uni.c:
+	Adds support for hexadecimal numbers with prefix "16#" as in Postscript.
+	Adds support for hexadecimal numbers with prefix "#16r" as in Common Lisp.
+	Adds support for hexadecimal numbers with prefix "16#" and suffix "#" as in ADA.
+	
+	* u2a.tcl:
+	Added the above.
+	Improved look a little, I hope.
+
+2007-01-09  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* ascii2uni.c (main): 
+	Added support for the format consisting of a decimal integer prefixed by "v"
+	as used in Perl.
+
+2006-12-20  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* uni2ascii.c: 
+	Added 38 missing characters to AscifyDiacritics and moved one that
+	was mapped to the wrong ASCII value.
+
+2006-12-02  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* ascii2uni.c (main): 
+	Added G to getopt string. Somehow it got left out, causing
+	option to be treated as erroneous.
+
+	Fixed error messages for missing arguments to command line options.
+
+	Fixed bug in -J format.
+
+2006-07-31  Bill Poser  <poser@khunekyaz.khunek.poser.org>
+
+	* ascii2uni.c (main): 
+	Now suppress info about use of Unicode Replacement Character if none
+	were emitted.
+
+	Now print info about individual ill-formed HTML entities missing final semi-colon.
+
+2006-07-05  Bill Poser  <poser@khunekyaz.khunek.poser.org>
+
+	* uni2ascii.c (main): 
+	Fixed bug in which a space was not added after spaces or newlines
+	when AddWhitespaceP was set in non-UTF-8 formats.
+
+2006-07-03  Bill Poser  <poser@khunekyaz.khunek.poser.org>
+
+	* Get_UTF32_From_UTF8.c: 
+	Incorporated a patch by Dylan Thurston that allows
+	correct handling of a read interrupted in the middle of
+	a UTF-8 sequence.
+
+	* Release 3.9.4.
+
+2006-06-06  Bill Poser  <poser@S010600023f310f85.ca.shawcable.net>
+	
+	* ascii2uni.1 uni2ascii.1:
+	Corrected incorrect references to uni2ascii in ascii2uni.1.
+	Added mention of default format.
+	This fixes Debian Bug#367546.
+
+2006-05-11  Bill Poser  <poser@S010600e0185aee1a.ca.shawcable.net>
+
+	* uni2ascii.c (AscifyStyle):
+	Fixed bugs in which -f option changed "9" to "y" and "Z" to "a"
+	per Debian bug report http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=365962
+
+	Now convert superscript and subscript digits and plus sign to ASCII equivalents.
+
+2006-04-30  Bill Poser  <poser@S010600e0185aee1a.ca.shawcable.net>
+
+	* u2a.tcl, uni2ascii.c
+	Fixed a bug that reversed the value of the switch for converting
+	ASCII characters in going from Unicode to ASCII.
+
+	Fixed miscellaneous bugs in the reporting of the number of characters
+	converted, replaced, etc. Uni2ascii now reports the total number
+	of characters processed and the number actually converted.
+
+2006-04-28  Bill Poser  <poser@S010600023f310f85.ca.shawcable.net>
+
+	* uni2ascii.c: 
+	Corrected handling of small caps. Added those that were missing
+	and changed some from converting to plain upper case to converting
+	to plain lower case as per Unicode classification.
+
+	Added expansion of plain single and double arrows.
+
+	Added replacement of union with U.
+
+2006-04-21  Bill Poser  <poser@S010600023f310f85.ca.shawcable.net>
+
+	* uni2ascii.c: 
+	Added expansion of U+2026 to ... under -x per user request.
+
+2006-04-17  Bill Poser  <poser@S010600023f310f85.ca.shawcable.net>
+	
+	* uni2ascii.c: 
+	Added detection of bad option argument in getopt.
+	
+	* ascii2uni.c: 
+	Added the three POSIX charmap formats - octal, decimal, and hex escapes for the
+	three low bytes of a UTF-32 character in big-endian order.
+
+	Added detection of bad option argument in getopt.
+	
+2006-04-16  Bill Poser  <poser@S010600e0185aee1a.ca.shawcable.net>
+
+	* uni2ascii.c: 
+	Added the three POSIX charmap formats - octal, decimal, and hex escapes for the
+	three low bytes of a UTF-32 character in big-endian order.
+
+2006-02-24  Bill Poser  <poser@S010600023f310f85.ca.shawcable.net>
+
+	* ascii2uni.c (main): 
+	Added detection of HTML character entities and numeric character references
+	lacking the final semi-colon. These are converted but a warning message
+	is printed.
+
+
+	* ascii2uni.c (main): 
+	Q mode now works in pure mode.
+
+	* ascii2uni.1 uni2ascii.1:
+	Corrected examples missing final semi-colon.
+
+2006-01-22  Bill Poser  <poser@S010600023f310f85.ca.shawcable.net>
+
+	* uni2ascii.c: 
+	Added support for SGML numeric character references.
+
+2006-01-14  Bill Poser  <poser@S010600e0185aee1a.ca.shawcable.net>
+
+	* ascii2uni.c:
+	Added RTF format (\uN with N decimal).
+
+	* uni2ascii.c: 
+	Fixed bug that prevented -G option from working.
+	Added RTF format (\uN with N decimal).
+	Added option of expanding some characters to sequences, e.g. ts-digraph to ts.	
+
+2006-01-12  Bill Poser  <poser@S010600e0185aee1a.ca.shawcable.net>
+
+	* uni2ascii.c:
+	Extended the ascii replacement options to the UTF-8 formats.
+
+2006-01-11  Bill Poser  <poser@S010600e0185aee1a.ca.shawcable.net>
+
+	* uni2ascii.c:
+	Added options for replacing Unicode characters with ascii equivalents
+	rather than a textual representation, e.g. various dashes with hyphen,
+	e-acute with e, boldface with plain.
+
+2005-12-12  Bill Poser  <poser@S010600e0185aee1a.ca.shawcable.net>
+
+	* Added GUI U2A.tcl.
+
+2005-12-06  Bill Poser  <poser@S010600e0185aee1a.ca.shawcable.net>
+
+	* uni2ascii.c: 
+	The option is now available of converting Unicode to 
+	HTML character entities if one exists.
+
+	Fixed bug in which -q option was not recognized.
+
+2005-12-05  Bill Poser  <poser@S010600e0185aee1a.ca.shawcable.net>
+
+	* uni2ascii.c ascii2uni: 
+	Added support for format X'00E9'.
+
+2005-09-27  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* uni2ascii.c ascii2uni.c: 
+	Added support for octal-escaped UTF-8.
+
+2005-09-21  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* ascii2uni.c uni2ascii.c: 
+	Added the two UTF-8 formats =XX and %XX.
+	Updated man pages to reflect this.
+
+2005-09-15  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* ascii2uni.c: 
+	Added option of converting all three HTML escapes,
+	including character entities, for which support was
+	added.
+
+2005-09-10  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* Added to both programs the -Z command line flag
+	which allows the user to set the conversion format
+	directly.
+
+2005-09-09  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* uni2ascii.c (main): 
+	Initialized FType to STDX to prevent segfault when called
+	with no arguments.
+
+	*uni2ascii.c:
+	Added -q flag to suppress chat. 
+	
+	*uni2ascii.c and ascii2uni.c:
+	Added formats <U00E9>, U00E9, u00E9, U+00E9
+
+2005-09-08  Bill Poser  <poser@khunekcho.khunek.poser.org>
+	* uni2ascii.c (main)
+	Added formats \x00E9, =x{00E9}, and Tcl \u~\U.
+	* ascii2uni.c (main)
+	Added program that does the inverse mapping.
+	
+2005-09-04  Bill Poser  <poser@khunekcho.khunek.poser.org>
+
+	* uni2ascii.c (main): 
+	Added -B flag to generate backslash-escaped hex, e.g. \x0561.
+	
+

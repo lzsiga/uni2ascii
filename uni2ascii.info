@@ -1,0 +1,12 @@
+Package: uni2ascii
+Version: 4.11
+Revision: 0
+Source: http://billposer.org/Software/Downloads/%n-4.11.tar.bz2
+Source-MD5:   uni2ascii-4.11.tar.bz2
+SourceDirectory: %n-%v
+SetLDFLAGS: -lintl
+ConfigureParams: --mandir="%i/share/man"
+License: GPL
+Maintainer: Trevor Harmon <trevor@vocaro.com>
+Description: Converts text between Unicode and ASCII
+Homepage: http://billposer.org/Software/uni2ascii.html

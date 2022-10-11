@@ -1,0 +1,468 @@
+.TH uni2ascii 1 "August, 2009"
+.SH NAME
+uni2ascii \- convert UTF-8 Unicode to various 7-bit ASCII representations
+.SH SYNOPSIS
+.B uni2ascii [options] (<input file name>)
+.SH DESCRIPTION
+.I uni2ascii
+converts UTF-8 Unicode to various 7-bit ASCII representations. If no format is specified, standard
+hexadecimal format (e.g. 0x00e9) is used.  It reads from the standard
+input and writes to the standard output.
+.PP
+Command line options are:
+.sp 1
+.TP
+.B \-A
+List the single character approximations carried out by the \-y flag.
+.TP
+.B \-a <format>
+Convert to the specified format. Formats may be specified by means of the following
+arbitrary single character codes, by means of names such as "SGML_decimal", and by
+examples of the desired format.
+.IP
+.B A
+Generate hexadecimal numbers with prefix U in angle-brackets (<U00E9>).
+.IP
+.B B
+Generate \\x-escaped hex (e.g. \\x00E9)
+.IP
+.B C
+Generate \\x escaped hexadecimal numbers in braces (e.g. \\x{00E9}).
+.IP
+.B D
+Generate decimal HTML numeric character references (e.g. &#0233;)
+.IP
+.B E
+Generate hexadecimal with prefix U (U00E9).
+.IP
+.B F
+Generate hexadecimal with prefix u (u00E9).
+.IP
+.B G
+Convert hexadecimal in single quotes with prefix X (e.g. X'00E9').
+.IP
+.B H
+Generate hexadecimal HTML numeric character references (e.g. &#x00E9;)
+.IP
+.B I
+Generate hexadecimal UTF-8 with each byte's hex preceded by an =-sign (e.g. =C3=A9) . This is the 
+Quoted Printable format defined by RFC 2045. 
+.IP
+.B J
+Generate hexadecimal UTF-8 with each byte's hex preceded by a %-sign (e.g.  %C3%A9). This is the
+URI escape format defined by RFC 2396. 
+.IP
+.B K
+Generate octal UTF-8 with each byte escaped by a backslash (e.g.  \\303\\251)
+.IP
+.B L
+Generate \\U-escaped hex outside the BMP, \\u-escaped hex within the BMP (U+0000-U+FFFF).
+.IP
+.B M
+Generate hexadecimal SGML numeric character references (e.g. \\#xE9;)
+.IP
+.B N
+Generate decimal SGML numeric character references (e.g. \\#233;)
+.IP
+.B O
+Generate octal escapes for the three low bytes in big-endian order(e.g. \\000\\000\\351))
+.IP
+.B P
+Generate hexadecimal numbers with prefix U+ (e.g. U+00E9)
+.IP
+.B Q
+Generate character entities (e.g. &eacute;) where possible, otherwise hexadecimal
+numeric character references.
+.IP
+.B R
+Generate raw hexadecimal numbers (e.g. 00E9)
+.IP
+.B S
+Generate hexadecimal escapes for the three low bytes in big-endian order (e.g. \\x00\\x00\\xE9)
+.IP
+.B T
+Generate decimal escapes for the three low bytes in big-endian order (e.g. \\d000\\d000\\d233)
+.IP
+.B U
+Generate \\u-escaped hexadecimal numbers (e.g. \\u00E9).
+.IP
+.B V
+Generate \\u-escaped decimal numbers (e.g. \\u00233).
+.IP
+.B X
+Generate standard hexadecimal numbers (e.g. 0x00E9).
+.IP
+.B 0
+Generate hexadecimal UTF-8 with each byte's hex enclosed within angle brackets (e.g. <C3><A9>).
+.IP
+.B 1
+Generate Common Lisp format hexadecimal numbers (e.g. #x00E9).
+.IP
+.B 2
+Generate Perl format decimal numbers with prefix v (e.g. v233).
+.IP
+.B 3
+Generate hexadecimal numbers with prefix $ (e.g. $00E9).
+.IP
+.B 4
+Generate Postscript format hexadecimal numbers with prefix 16# (e.g. 16#00E9).
+.IP
+.B 5
+Generate Common Lisp format hexadecimal numbers with prefix #16r (e.g. #16r00E9).
+.IP
+.B 6
+Generate ADA format hexadecimal numbers with prefix 16# and suffix # (e.g. 16#00E9#).
+.IP
+.B 7
+Generate Apache log format hexadecimal UTF-8 with each byte's hex preceded by a backslash-x (e.g.  \\xC3\\xA9). 
+.IP
+.B 8
+Generate Microsoft OOXML format hexadecimal numbers with prefix _x and suffix _ (e.g. _x00E9_).
+.IP
+.B 9
+Generate %\\u-escaped hexadecimal numbers (e.g. %\\u00E9).
+.TP
+.B \-B
+Transform to ASCII if possible. This option is equivalent to the combination cdefx.
+.TP
+.B \-c
+Convert circled and parenthesized characters to their unenclosed counterparts. 
+.TP
+.B \-d
+Strip diacritics. This converts single codepoints representing characters
+with diacritics to the corresponding ASCII character and deletes
+separately encoded diacritics.
+.TP
+.B \-e
+Convert characters to their approximate ASCII equivalents, as follows:
+.br
+U+00A0  no break space                              0x20  space 
+.br
+U+00AB  left-pointing double angle quotation mark   0x22  double quote
+.br
+U+00AD  soft hyphen                                 0x2D  minus
+.br
+U+00AF  macron                                      0x2D  minus
+.br
+U+00BB  right-pointing double angle quotation mark  0x22  double quote
+.br
+U+1361  ethiopic word space                         0x20  space 
+.br
+U+1680  ogham space                                 0x20  space 
+.br
+U+2000  en quad                                     0x20  space 
+.br
+U+2001  em quad                                     0x20  space 
+.br
+U+2002  en space                                    0x20  space 
+.br
+U+2003  em space                                    0x20  space 
+.br
+U+2004  three-per-em space                          0x20  space 
+.br
+U+2005  four-per-em space                           0x20  space 
+.br
+U+2006  six-per-em space                            0x20  space
+.br
+U+2007  figure space                                0x20  space
+.br
+U+2008  punctuation space                           0x20  space 
+.br
+U+2009  thin space                                  0x20  space 
+.br
+U+200A  hair space                                  0x20  space 
+.br
+U+200B  zero-width space                            0x20  space 
+.br
+U+2010  hyphen                                      0x2D  minus
+.br
+U+2011  non-breaking hyphen                         0x2D  minus
+.br
+U+2012  figure dash                                 0x2D  minus
+.br
+U+2013  en dash                                     0x2D  minus
+.br
+U+2014  em dash                                     0x2D  minus
+.br
+U+2018  left single quotation mark                  0x60  left single quote 
+.br
+U+2019  right single quotation mark                 0x27  right or neutral single quote 
+.br
+U+201A  single low-9 quotation mark                 0x60  left single quote 
+.br
+U+201B  single high-reversed-9 quotation mark       0x60  left single quote 
+.br
+U+201C  left double quotation mark                  0x22  double quote
+.br
+U+201D  right double quotation mark                 0x22  double quote
+.br
+U+201E  double low-9 quotation mark                 0x22  double quote
+.br
+U+201F  double high-reversed-9 quotation mark       0x22  double quote
+.br
+U+2039  single left-pointing angle quotation mark   0x60  left single quote 
+.br
+U+203A  single right-pointing angle quotation mark  0x27  right or neutral single quote 
+.br
+U+204E  low asterisk                                0x2A  asterisk
+.br
+U+2212  minus sign                                  0x2D  minus
+.br
+U+2216  set minus                                   0x5C  backslash
+.br
+U+2217  asterisk operator                           0x2A  asterisk
+.br
+U+2223  divides                                     0x7C  vertical line
+.br
+U+2500  box drawing light horizontal                0x2D  minus
+.br		  	
+U+2501  box drawing heavy horizontal                0x2D  minus
+.br
+U+2502  box drawing light vertical                  0x7C  vertical line
+.br
+U+2503  box drawing heavy vertical                  0x7C  vertical line
+.br
+U+2731  heavy asterisk                              0x2A  asterisk
+.br
+U+275D  heavy double turned comma quotation mark    0x22  double quote
+.br
+U+275E  heavy double comma quotation mark           0x22  double quote
+.br
+U+3000  ideographic space                           0x20  space 
+.br
+U+FE60  small ampersand                             0x26  ampersand
+.br
+U+FE61  small asterisk                              0x2A  asterisk
+.br
+U+FE62  small plus sign                             0x2B  plus sign
+.TP
+.B \-E
+List the expansions performed by the \-x flag.
+.TP
+.B \-f
+Convert stylistic variants to plain ASCII.
+Stylistic equivalents include:
+superscript and subscript forms,
+small capitals (e.g. U+1D04),
+script forms (e.g. U+212C),
+black letter forms (e.g. U+212D),
+fullwidth forms (e.g. U+FF01),
+halfwidth forms (e.g. U+FF7B),
+and the mathematical alphanumeric symbols (e.g. U+1D400).
+.TP
+.B \-h 
+Help. Print the usage message and exit.
+.TP
+.B \-l
+Use lowercase a-f when generating hexadecimal numbers.
+.TP
+.B \-n
+Convert newlines too. By default, they are left alone.
+.TP
+.B \-P
+Pass through Unicode rather than converting to ASCII escapes if the character
+is not converted to an ASCII character by a transformation such as diacritic
+stripping. Note that if this option is used the output may not be pure ASCII.
+.TP 
+.B \-p 
+Pure. Convert characters within the ASCII range as well as those above.
+.TP
+.B \-q
+Quiet. Do not chat unnecessarily while working.
+.TP
+.B \-s
+Convert space characters too. By default, they are left alone.
+.TP
+.B \-S <Unicode:ASCII>
+Define a custom substitution. The argument should consist of the Unicode
+codepoint to be replaced followed by the ASCII code of the character to
+be used as replacement, separated by a colon. If no ASCII code follows
+the colon, the specified Unicode character will be deleted.
+The code values may be in hexadecimal, octal, or decimal following the
+usual conventions (to be precise,those of strtoul(3)).
+This option may be repeated as many times as desired to define multiple
+substitutions.
+.TP
+.B \-v 
+Print program version information and exit.
+.TP
+.B \-w
+Add a space after each converted item.
+.TP
+.B \-x
+Expand certain characters to multicharacter sequences.
+The characters affected are the same as those affected by the \-y
+option.
+.br
+U+00A2 CENT SIGN                        -> cent
+.br
+U+00A3 POUND SIGN                       -> pound
+.br
+U+00A5 YEN SIGN                         -> yen
+.br
+U+00A9 COPYRIGHT SYMBOL                 -> (c)
+.br
+U+00AE REGISTERED SYMBOL                -> (R)
+.br
+U+00BC ONE QUARTER                      -> 1/4
+.br
+U+00BD ONE HALF                         -> 1/2
+.br
+U+00BE THREE QUARTERS                   -> 3/4
+.br
+U+00C6 CAPITAL LETTER ASH               -> AE
+.br
+U+00DF SMALL LETTER SHARP S             -> ss
+.br
+U+00E6 SMALL LETTER ASH                 -> ae
+.br
+U+0132 LIGATURE IJ                      -> IJ
+.br
+U+0133 LIGATURE ij                      -> ij
+.br
+U+0152 LIGATURE OE                      -> OE
+.br
+U+0153 LIGATURE oe                      -> oe
+.br
+U+01F1 CAPITAL LETTER DZ                -> DZ
+.br
+U+01F2 MIXED LETTER Dz                  -> Dz
+.br
+U+01F3 SMALL LETTER DZ                  -> dz
+.br
+U+02A6 SMALL LETTER TS DIGRAPH          -> ts
+.br
+U+2026 HORIZONTAL ELLIPSIS              -> ...
+.br
+U+20AC EURO SIGN                        -> euro
+.br
+U+22EF MIDLINE HORIZONTAL ELLIPSIS      -> ...
+.br
+U+2190 LEFTWARDS ARROW                  -> <-
+.br
+U+2192 RIGHTWARDS ARROW                 -> ->
+.br
+U+21D0 LEFTWARDS DOUBLE ARROW           -> <=
+.br
+U+21D2 RIGHTWARDS DOUBLE ARROW          -> =>
+.br
+U+FB00 LATIN SMALL LIGATURE FF          -> ff
+.br
+U+FB01 LATIN SMALL LIGATURE FI          -> fi
+.br
+U+FB02 LATIN SMALL LIGATURE FL          -> fl
+.br
+U+FB03 LATIN SMALL LIGATURE FFI         -> ffi
+.br
+U+FB04 LATIN SMALL LIGATURE FFL         -> ffl
+.br
+U+FB06 LATIN SMALL LIGATURE ST          -> st
+.TP
+.B \-y
+Convert certain characters having multi-character expansions
+to single-character ascii approximations instead (e.g. to
+maintain character-positioning). The characters affected are the
+same as those affected by the \-x option.
+.br
+U+00A2 CENT SIGN                        -> c
+.br
+U+00A3 POUND SIGN                       -> #
+.br
+U+00A5 YEN SIGN                         -> Y
+.br
+U+00A9 COPYRIGHT SYMBOL                 -> C
+.br
+U+00AE REGISTERED SYMBOL                -> R
+.br
+U+00BC ONE QUARTER                      -> -
+.br
+U+00BD ONE HALF                         -> -
+.br
+U+00BE THREE QUARTERS                   -> -
+.br
+U+00C6 CAPITAL LETTER ASH               -> A
+.br
+U+00DF SMALL LETTER SHARP S             -> s
+.br
+U+00E6 SMALL LETTER ASH                 -> a
+.br
+U+0132 LIGATURE IJ                      -> I
+.br
+U+0133 LIGATURE ij                      -> i
+.br
+U+0152 LIGATURE OE                      -> O
+.br
+U+0153 LIGATURE oe                      -> o
+.br
+U+01F1 CAPITAL LETTER DZ                -> D
+.br
+U+01F2 MIXED LETTER Dz                  -> D
+.br
+U+01F3 SMALL LETTER DZ                  -> d
+.br
+U+02A6 SMALL LETTER TS DIGRAPH          -> t
+.br
+U+2026 HORIZONTAL ELLIPSIS              -> .
+.br
+U+20AC EURO SIGN                        -> E
+.br
+U+22EF MIDLINE HORIZONTAL ELLIPSIS      -> .
+.br
+U+2190 LEFTWARDS ARROW                  -> <
+.br
+U+2192 RIGHTWARDS ARROW                 -> >
+.br
+U+21D0 LEFTWARDS DOUBLE ARROW           -> <
+.br
+U+21D2 RIGHTWARDS DOUBLE ARROW          -> >
+.TP
+.B \-Z <format>
+Generate output using the supplied format. The format
+specified will be used as the format string in a call
+to printf(3) with a single argument consisting of an unsigned
+long integer. For example, to obtain the same output
+as with the \-U flag, the format would be: \\u%04X.
+.PP
+If conversion of spaces is disabled (as it is by default), if
+space characters outside the ASCII range are encountered 
+(U+3000 ideographic space, U+1351 Ethiopic word space, and U+1680 ogham space mark),
+they are replaced with the ASCII space character (0x20)
+so as to keep the output pure 7-bit ASCII.
+.PP
+Note that XML and XHTML numeric character entities are like those of HTML with two
+restrictions. First, in X(HT)ML the terminating semi-colon may not be omitted.
+Second, in X(HT)ML the "x" must be lower-case, while in HTML it may be either
+upper- or lower-case. We always generate the terminating semi-colon and use a lower-case
+"x", so the option dubbed "HTML" produces valid XML and XHTML as well.
+
+.SH "EXIT STATUS"
+.PP
+The following values are returned on exit:
+
+.IP "0 SUCCESS"
+The input was successfully converted.
+
+.IP "2 I/O ERROR"
+A system error ocurred during input or output.
+
+.IP "3 INFO"
+The user requested information such as the version number or usage synopsis
+and this has been provided.
+
+.IP "5 BAD OPTION"
+An incorrect option flag was given on the command line.
+
+
+.IP "8 BAD RECORD"
+Ill-formed UTF-8 was detected in the input.
+
+.SH "SEE ALSO"
+ascii2uni(1), Text::Unidecode
+.sp 1
+.SH AUTHOR
+Bill Poser <billposer@alum.mit.edu>
+.SH LICENSE
+GNU General Public License
+
+
+
