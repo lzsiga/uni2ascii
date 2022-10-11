@@ -3,6 +3,12 @@
 /* Define to 1 if you have the <fcntl.h> header file. */
 #undef HAVE_FCNTL_H
 
+/* Define to 1 if you have the `fgetln' function. */
+#undef HAVE_FGETLN
+
+/* Define to 1 if you have the `getline' function. */
+#undef HAVE_GETLINE
+
 /* Define to 1 if you have the <gnu/libc-version.h> header file. */
 #undef HAVE_GNU_LIBC_VERSION_H
 
@@ -85,6 +91,9 @@
 
 /* Define to the one symbol short name of this package. */
 #undef PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
 
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION

@@ -1,3 +1,7 @@
+Bartosz Kuźma
+     For patches enabling compilation under NetBSD after removal
+     of builtin getline.
+
 Egmont Koblinger and John McGowan
      Pointed out bug in uni2ascii that caused a segfault if no command-line
      flag was given.

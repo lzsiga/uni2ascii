@@ -1,5 +1,25 @@
-2011-02-04  Bill Poser  <poser@khunekcho.khunek>
+2011-05-14  Bill Poser  <poser@khunekcho>
+	Release of version 4.18.
+	* ascii2uni.c (main): 
+	Applied patch supplied by Bartosz Kuzma to handle the situation
+	in NetBSD which lacks getline.
 
+	* uni2ascii.c (AscifyStyle): 
+	Fixed bug in which a couple of ascii characters were
+	included in the list of characters replaced by them.
+	This did not affect the output but threw off the substitution
+	count.
+
+2011-04-10  Bill Poser  <poser@khunekcho>
+
+	* uni2ascii.c: 
+	Clarified semantics of pure option as converting characters
+	in ascii range other than space and newline.
+	
+	Fixed bug in which this was not implemented correctly for UTF8 types.
+
+2011-02-04  Bill Poser  <poser@khunekcho.khunek>
+	Release of version 4.17
 	* uni2ascii.c (AscifyEquiv): 
 	Now convert U+00B7 middle dot to period.
 	Now convert U+0085 next line and U+2028 line separator to newline.

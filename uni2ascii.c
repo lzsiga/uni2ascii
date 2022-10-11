@@ -1,9 +1,9 @@
-/* Time-stamp: <2011-02-16 10:43:41 poser>
+/* Time-stamp: <2011-05-14 19:03:13 poser>
  *
  * Converts UTF-8 Unicode to pure 7-bit ASCII using any of a number
  * of different representations. 
  * 
- * Copyright (C) 2004-2010 William J. Poser (billposer@alum.mit.edu)
+ * Copyright (C) 2004-2011 William J. Poser (billposer@alum.mit.edu)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 3 of the GNU General Public License as published by
@@ -128,7 +128,7 @@ and for conversion even of newline and space characters.\n"));
   fprintf(stderr,_("       -n Convert newlines.\n"));
   fprintf(stderr,_("       -s Convert space characters.\n"));
   fprintf(stderr,_("       -P Pass through Unicode if not transformed - do not ascify\n"));
-  fprintf(stderr,_("       -p Convert codepoints below 0x80 too.\n"));
+  fprintf(stderr,_("       -p Convert codepoints below 0x80 except for 0x0A and 0x20 too.\n"));
   fprintf(stderr,_("       -l Use lower-case a-f when generating hex.\n"));
   fprintf(stderr,_("       -w Add a space after each converted item.\n"));
   fprintf(stderr,_("       -B Best ASCII. Transform to ASCII if possible. Combines cdefx.\n"));
@@ -488,8 +488,9 @@ int AscifyEnclosed(UTF32 c) {
   return 1;
 }
 
-/*  Returns 1 if it handled the character, 0 if not. */
+/*  Returns 1 if it replaced the character, 0 if not. */
 int AscifyEquiv(UTF32 c) {
+  int retval = 1;
   switch (c)
     {
     case 0x0085:		/* next line */
@@ -584,9 +585,9 @@ int AscifyEquiv(UTF32 c) {
       putchar('|');
       break;
     default:
-      return 0;
+      retval = 0;
     }
-  return 1;
+  return retval;
 }
 
 /*  Returns 1 if it handled the character, 0 if not. */
@@ -1568,8 +1569,7 @@ int AscifyStyle(UTF32 c) {
     case 0x1D670:
       putchar(0x41);
       break;
-    case 0x0042:		/* B */
-    case 0x212C:
+    case 0x212C:		/* B */
     case 0xFF22:
     case 0x1D401:
     case 0x1D435:
@@ -1685,7 +1685,6 @@ int AscifyStyle(UTF32 c) {
     case 0x1D677:
       putchar(0x48);		/* H */
       break;
-    case 0x0049:
     case 0x2110:
     case 0x2111:
     case 0x2160:
@@ -2775,6 +2774,8 @@ int main (int ac, char *av[])
   short MakeP = 0;
   short LittleEndianP = 0;
 
+  short convp = 1;		/* Just for local use due to complex logic */
+
   char *AboveBMPfmt;
   char *WithinBMPfmt;
   char *e;
@@ -2854,7 +2855,7 @@ int main (int ac, char *av[])
       PassThroughP = 1;
       UTF8Type = 0;
       break;
-    case 'p':
+    case 'p':		/* Convert even characters within the ASCII range */
       PureP =1;
       break;
     case 's':
@@ -3007,7 +3008,19 @@ int main (int ac, char *av[])
 	ucnt= 0;
 	while(ucnt < UCBytes) {
 	  ch = ustr[ucnt++];
-	  if(!PureP && (ch <= 0x7F)) putchar(ch);
+	  convp = 1;
+	  if(ch <= 0x7F) convp = 0;
+	  switch(ch) {
+	    case 0x0A:
+	      if(!PreserveNewlinesP) convp = 1;
+	      break;
+	    case 0x20:
+	      if(!PreserveSpacesP) convp = 1;
+	      break;
+	    default:
+	      if(PureP) convp = 1;
+	    }
+	  if (!convp) putchar(ch);
 	  else {
 	    ConvertedCnt++;
 	    switch (UTF8Type) {
@@ -3035,7 +3048,19 @@ int main (int ac, char *av[])
     }
     else {
       while( (ch = getchar()) != EOF) { 
-	if(!PureP && (ch <= 0x7F)) putchar(ch);
+	convp = 1;
+	if(ch <= 0x7F) convp = 0;
+	switch(ch) {
+	  case 0x0A:
+	    if(!PreserveNewlinesP) convp = 1;
+	    break;
+	  case 0x20:
+	    if(!PreserveSpacesP) convp = 1;
+	    break;
+	  default:
+	    if(PureP) convp = 1;
+	  }
+	if (!convp) putchar(ch);
 	else {
 	  ConvertedCnt++;
 	  switch (UTF8Type) {

@@ -458,12 +458,18 @@ int main (int ac, char *av[])
 
    LineNo = 0;
 
+#if defined(HAVE_GETLINE)
    lbuf= (char *) malloc(len);
    if(lbuf == NULL) {
      fprintf(stderr,"Failed to allocate buffer for input line.\n");
      exit(2);
    }
    while ((read = getline(&lbuf, &len, infp)) != -1) {
+#elif defined(HAVE_FGETLN)
+   while (NULL != (lbuf = fgetln(infp, &read))) {
+#else
+#	error DIE!
+#endif
      AddNewlineP = 1;
      LineNo++;
      last = read - 1;
@@ -665,7 +671,9 @@ int main (int ac, char *av[])
      } /* Loop over current line */
      if(AddNewlineP) putchar('\n');
    } /* Loop over input lines */
+#if defined(HAVE_READLINE)
    if(lbuf) free(lbuf);
+#endif
 
 done:
    if(VerboseP) {

@@ -1,3 +1,11 @@
+2011-05-14 4.18
+Fixed bug in uni2ascii in which in certain cases the subsitution
+      count was too high, fixing Debian bug #626268.
+Patched to handle situation in NetBSD which lacks getline.
+Clarified semantics of pure option as converting characters
+in ascii range other than space and newline.
+Fixed bug in which this was not implemented correctly for UTF8 types.
+
 2011-02-16 4.17
 Added to uni2ascii the following conversions to nearest ascii equivalent:
        U+2022 bullet to 'o'

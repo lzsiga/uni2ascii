@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT(uni2ascii, 4.17, billposer@alum.mit.edu)
+AC_INIT(uni2ascii, 4.18, billposer@alum.mit.edu)
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE
 
@@ -43,7 +43,7 @@ AC_CHECK_HEADERS([fcntl.h gnu/libc-version.h libintl.h locale.h regex.h stddef.h
 # Checks for library functions.
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
-AC_CHECK_FUNCS([regcomp setlocale strtoul])
+AC_CHECK_FUNCS([fgetln getline regcomp setlocale strtoul])
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

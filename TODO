@@ -1,3 +1,31 @@
+Add GNU-style long options.   
+
+from	jidanni@jidanni.org
+reply-to	jidanni@jidanni.org,
+615228@bugs.debian.org
+to	submit@bugs.debian.org
+date	Sat, Feb 26, 2011 at 4:10 AM
+subject	Bug#615228: triangles
+	
+hide details 4:10 AM (6 hours ago)
+	
+X-debbugs-Cc: Bill Poser <billposer@alum.mit.edu>
+Package: uni2ascii
+Version: 4.17-1
+Severity: wishlist
+
+Perhaps replace with "V" or "v".
+
+       character: ▼ (9660, #o22674, #x25bc)
+      code point: 0x217E
+     buffer code: #xE2 #x96 #xBC
+ name: BLACK DOWN-POINTING TRIANGLE
+ old-name: BLACK DOWN POINTING TRIANGLE
+ general-category: So (Symbol, Other)
+
+Bet there are others nearby it too...
+
+
 Add support for:
     backslash escapes (\t etc.)
     trigraphs
