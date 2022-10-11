@@ -1,5 +1,5 @@
 /*
- * Time-stamp: <2008-03-10 12:04:46 poser>
+ * Time-stamp: <2010-08-29 20:55:45 poser>
  *
  * Copyright (C) 2003 William J. Poser.
  * This program is free software; you can redistribute it and/or modify
@@ -17,7 +17,7 @@
  * or go to the web page:  http://www.gnu.org/licenses/gpl.txt.
  */
 
-#include "endian.h"
+#include "u2a_endian.h"
 
 /* Returns a value indicating the endianness of the machine */
 

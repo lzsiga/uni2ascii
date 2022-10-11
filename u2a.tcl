@@ -2,7 +2,7 @@
 #-*- mode: Tcl;time-stamp-start:"TimeStamp[ 	]+\\\\?[\"<]+";-*-
 # the next line restarts using wish \
 exec wish $0 -- $@
-set TimeStamp "2009-04-22 00:57:01 poser"
+set TimeStamp "2010-08-29 21:04:40 poser"
 #
 # Copyright (C) 2005-2008 William J. Poser (billposer@alum.mit.edu)
 # This program is free software; you can redistribute it and/or modify
@@ -20,7 +20,7 @@ set TimeStamp "2009-04-22 00:57:01 poser"
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 # or go to the web page:  http://www.gnu.org/licenses/gpl.txt.
 
-set Version "4.13"
+set Version "4.15"
 encoding system utf-8
 set DebugP 0;				# General debugging?
 package require tablelist

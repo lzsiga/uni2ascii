@@ -3,7 +3,7 @@ bin_SCRIPTS = u2a
 dist_man_MANS = uni2ascii.1 ascii2uni.1
 uni2ascii_SOURCES = endian.c enttbl.c SetFormat.c uni2ascii.c UTF8in.c putu8.c
 ascii2uni_SOURCES = ascii2uni.c enttbl.c GetWord.c putu8.c SetFormat.c
-noinst_HEADERS = endian.h enttbl.h exitcode.h formats.h unicode.h utf8error.h
+noinst_HEADERS = u2a_endian.h enttbl.h exitcode.h formats.h unicode.h utf8error.h
 AM_CFLAGS =
 if NEWSUMMARY
 AM_CFLAGS += -DNEWSUMMARY

@@ -1,9 +1,9 @@
-/* Time-stamp: <2009-08-04 20:34:25 poser>
+/* Time-stamp: <2010-08-29 21:03:21 poser>
  *
  * Converts UTF-8 Unicode to pure 7-bit ASCII using any of a number
  * of different representations. 
  * 
- * Copyright (C) 2004-2009 William J. Poser (billposer@alum.mit.edu)
+ * Copyright (C) 2004-2010 William J. Poser (billposer@alum.mit.edu)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 3 of the GNU General Public License as published by
@@ -40,7 +40,7 @@
 #endif
 #include "unicode.h"
 #include "enttbl.h"
-#include "endian.h"
+#include "u2a_endian.h"
 #include "utf8error.h"
 #include "exitcode.h"
 #include "formats.h"
@@ -94,7 +94,7 @@ ShowVersion(FILE *fp)
 
 
 void Copyright (void) {
-  fprintf(stderr,"Copyright (C) 2004-2009 William J. Poser\n");
+  fprintf(stderr,"Copyright (C) 2004-2010 William J. Poser\n");
   fprintf(stderr,"This program is free software; you can redistribute\n\
 it and/or modify it under the terms of version 3 of\n\
 the GNU General Public License as published by the\n\
@@ -3098,8 +3098,8 @@ int main (int ac, char *av[])
       }
     } 
     if ( (FType == HDML) && (c > 0xFF)) {
-      fprintf(stderr,"Character 0x%04x encountered at character %d skipped.\n"
-	      ,c,CharCnt);
+      fprintf(stderr,"Character 0x%04x encountered at character %lu skipped.\n"
+	      ,(unsigned int) c,CharCnt);
       fprintf(stderr,"   Characters above 0xFF cannot be represented in HDML.\n");
       DeletedCnt++;
       continue;

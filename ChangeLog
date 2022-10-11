@@ -1,3 +1,17 @@
+2010-08-29  Bill Poser  <poser@khunekcho.khunek>
+
+	* ascii2uni.c: 
+	Removed getline.c dependent on GNU_SOURCE since getline is standard as of POSIX2008.
+
+	* uni2ascii.c: 
+	Renamed endian.h u2a_endian.h to avoid conflict with external endian.h.
+
+2010-04-12  Bill Poser  <poser@khunekcho>
+
+	* ascii2uni.c (main): 
+	Changed Lineno from int to unsigned long and resolved half-a-dozen
+	incompatibilities between its type and conversion specs.
+
 2009-08-04  Bill Poser  <poser@bill-laptop>
 	Release of version 4.14.
 	

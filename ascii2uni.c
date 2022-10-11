@@ -1,8 +1,8 @@
-/* Time-stamp: <2009-04-22 13:19:00 poser>
+/* Time-stamp: <2010-08-29 21:36:19 poser>
  *
  * Convert text containing various 7-bit ASCII escapes to UTF-8 Unicode.
  *
- * Copyright (C) 2005-2009 William J. Poser (billposer@alum.mit.edu)
+ * Copyright (C) 2005-2010 William J. Poser (billposer@alum.mit.edu)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 3 of the GNU General Public License
@@ -86,7 +86,7 @@ ShowVersion(FILE *fp)
 }
 
 void Copyright() {
-  fprintf(stderr,"Copyright (C) 2004-2009 William J. Poser\n");
+  fprintf(stderr,"Copyright (C) 2004-2010 William J. Poser\n");
   fprintf(stderr,"This program is free software; you can redistribute\n\
 it and/or modify it under the terms of version 3 of\n\
 the GNU General Public License as published by the\n\
@@ -224,7 +224,7 @@ int main (int ac, char *av[])
   long MicrosoftStyle = 0L;	/* Number of Microsoft-style ncrs detected */
   int Word_Length;
   int NConsumed;
-  int LineNo;
+  unsigned long LineNo;
   char *str;
   char *iptr;
   int eof;
@@ -381,7 +381,7 @@ int main (int ac, char *av[])
        if(Word_Length == 0) continue;
        TokenNumber++;
        if(str == NULL){
-	 fprintf(stderr,_("%1$s: failed to allocate storage for input token %2$ld at line %3$ul.\n"),
+	 fprintf(stderr,_("%1$s: failed to allocate storage for input token %2$ld at line %3$lu.\n"),
 		 pgname,TokenNumber,GetWordLineNo);
 	 exit(OUTOFMEMORY);
        }
@@ -534,11 +534,11 @@ int main (int ac, char *av[])
        if(BMPSplitP) {
 	 if(sscanf(iptr,SplitFormat,&SplitStr,&num,&NConsumed)) {
 	   if( (num <= 0xFFFF) && (SplitStr[0] == 'U')) {
-	     fprintf(stderr,_("Warning: the code \\U%1$08lX at line %2$d falls within the BMP.\n"),
+	     fprintf(stderr,_("Warning: the code \\U%1$08lX at line %2$lu falls within the BMP.\n"),
 		     num,LineNo);
 	   }
 	   if( (num > 0xFFFF) && (SplitStr[0] == 'u')) {
-	     fprintf(stderr,_("Warning: the code \\u%1$08lX at line %2$d falls outside the BMP.\n"),
+	     fprintf(stderr,_("Warning: the code \\u%1$08lX at line %2$lu falls outside the BMP.\n"),
 		     num,LineNo);
 	   }
 	   putu8(num);
@@ -588,7 +588,7 @@ int main (int ac, char *av[])
 	     TokenNumber++;
 	   }
 	   else {
-	     fprintf(stderr,"ascii2uni: unknown HTML/HDML character entity \"&%s;\" at line %d\n",
+	     fprintf(stderr,"ascii2uni: unknown HTML/HDML character entity \"&%s;\" at line %lu\n",
 		     enam,LineNo);
 	     putu8(UNI_REPLACEMENT_CHAR);
 	     iptr+=NConsumed;
@@ -635,7 +635,7 @@ int main (int ac, char *av[])
 	     if(*(iptr-1+NConsumed) != ';') {
 	       MicrosoftStyle++;
 	       fprintf(stderr,
-		       "The HTML entity %1$s at token %2$lu of line %3$d lacks the requisite final semicolon.\n",
+		       "The HTML entity %1$s at token %2$lu of line %3$lu lacks the requisite final semicolon.\n",
 		       ExtractSubstring(tmpstr,iptr,iptr+NConsumed-3),TokenNumber,LineNo);
 	       if(StrictP) {
 		 putchar(*iptr++);
@@ -647,7 +647,7 @@ int main (int ac, char *av[])
 	     if(*(iptr-1+NConsumed) != ';') {
 	       MicrosoftStyle++;
 	       fprintf(stderr,
-		       _("The HTML entity %1$s at token %2$lu of line %3$d lacks the requisite final semicolon.\n"),
+		       _("The HTML entity %1$s at token %2$lu of line %3$lu lacks the requisite final semicolon.\n"),
 		       ExtractSubstring(tmpstr,iptr,iptr+NConsumed-3),TokenNumber,LineNo);
 	       if(StrictP) {
 		 putchar(*iptr++);
@@ -689,170 +689,3 @@ done:
    }
    exit(SUCCESS);
 }
-
-/* Include a copy of getline.c for portability to non-GNU environments */
-#ifndef _GNU_SOURCE
-/* getline.c -- Replacement for GNU C library function getline
-
-Copyright (C) 1993 Free Software Foundation, Inc.
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License as
-published by the Free Software Foundation; either version 2 of the
-License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.  */
-
-/* Written by Jan Brittenson, bson@gnu.ai.mit.edu.  */
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
-#include <sys/types.h>
-#include <stdio.h>
-#include <assert.h>
-#include <errno.h>
-
-#if STDC_HEADERS
-#include <stdlib.h>
-#else
-char *malloc (), *realloc ();
-#endif
-
-/* Always add at least this many bytes when extending the buffer.  */
-#define MIN_CHUNK 64
-
-/* Read up to (and including) a TERMINATOR from STREAM into *LINEPTR
-   + OFFSET (and null-terminate it).  If LIMIT is non-negative, then
-   read no more than LIMIT chars.
-
-   *LINEPTR is a pointer returned from malloc (or NULL), pointing to
-   *N characters of space.  It is realloc'd as necessary.  
-
-   Return the number of characters read (not including the null
-   terminator), or -1 on error or EOF.  On a -1 return, the caller
-   should check feof(), if not then errno has been set to indicate the
-   error.  */
-
-int
-getstr (lineptr, n, stream, terminator, offset, limit)
-     char **lineptr;
-     size_t *n;
-     FILE *stream;
-     int terminator;
-     int offset;
-     int limit;
-{
-  int nchars_avail;		/* Allocated but unused chars in *LINEPTR.  */
-  char *read_pos;		/* Where we're reading into *LINEPTR. */
-  int ret;
-
-  if (!lineptr || !n || !stream)
-    {
-      errno = EINVAL;
-      return -1;
-    }
-
-  if (!*lineptr)
-    {
-      *n = MIN_CHUNK;
-      *lineptr = malloc (*n);
-      if (!*lineptr)
-	{
-	  errno = ENOMEM;
-	  return -1;
-	}
-      *lineptr[0] = '\0';
-    }
-
-  nchars_avail = *n - offset;
-  read_pos = *lineptr + offset;
-
-  for (;;)
-    {
-      int save_errno;
-      register int c;
-
-      if (limit == 0)
-          break;
-      else
-      {
-          c = getc (stream);
-
-          /* If limit is negative, then we shouldn't pay attention to
-             it, so decrement only if positive. */
-          if (limit > 0)
-              limit--;
-      }
-
-      save_errno = errno;
-
-      /* We always want at least one char left in the buffer, since we
-	 always (unless we get an error while reading the first char)
-	 NUL-terminate the line buffer.  */
-
-      assert((*lineptr + *n) == (read_pos + nchars_avail));
-      if (nchars_avail < 2)
-	{
-	  if (*n > MIN_CHUNK)
-	    *n *= 2;
-	  else
-	    *n += MIN_CHUNK;
-
-	  nchars_avail = *n + *lineptr - read_pos;
-	  *lineptr = realloc (*lineptr, *n);
-	  if (!*lineptr)
-	    {
-	      errno = ENOMEM;
-	      return -1;
-	    }
-	  read_pos = *n - nchars_avail + *lineptr;
-	  assert((*lineptr + *n) == (read_pos + nchars_avail));
-	}
-
-      if (ferror (stream))
-	{
-	  /* Might like to return partial line, but there is no
-	     place for us to store errno.  And we don't want to just
-	     lose errno.  */
-	  errno = save_errno;
-	  return -1;
-	}
-
-      if (c == EOF)
-	{
-	  /* Return partial line, if any.  */
-	  if (read_pos == *lineptr)
-	    return -1;
-	  else
-	    break;
-	}
-
-      *read_pos++ = c;
-      nchars_avail--;
-
-      if (c == terminator)
-	/* Return the line.  */
-	break;
-    }
-
-  /* Done - NUL terminate and return the number of chars read.  */
-  *read_pos = '\0';
-
-  ret = read_pos - (*lineptr + offset);
-  return ret;
-}
-
-int
-getline (lineptr, n, stream)
-     char **lineptr;
-     size_t *n;
-     FILE *stream;
-{
-  return getstr (lineptr, n, stream, '\n', 0, (-1));
-}
-#endif
