@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT(uni2ascii, 4.16, billposer@alum.mit.edu)
+AC_INIT(uni2ascii, 4.17, billposer@alum.mit.edu)
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE
 

@@ -1,4 +1,4 @@
-.TH uni2ascii 1 "December, 2010"
+.TH uni2ascii 1 "February, 2011"
 .SH NAME
 uni2ascii \- convert UTF-8 Unicode to various 7-bit ASCII representations
 .SH SYNOPSIS
@@ -136,6 +136,8 @@ separately encoded diacritics.
 .B \-e
 Convert characters to their approximate ASCII equivalents, as follows:
 .br
+U+0085  next line                                   0x0A  newline 
+.br
 U+00A0  no break space                              0x20  space 
 .br
 U+00AB  left-pointing double angle quotation mark   0x22  double quote
@@ -143,6 +145,8 @@ U+00AB  left-pointing double angle quotation mark   0x22  double quote
 U+00AD  soft hyphen                                 0x2D  minus
 .br
 U+00AF  macron                                      0x2D  minus
+.br
+U+00B7  middle dot                                  0x2E  period
 .br
 U+00BB  right-pointing double angle quotation mark  0x22  double quote
 .br
@@ -199,6 +203,10 @@ U+201D  right double quotation mark                 0x22  double quote
 U+201E  double low-9 quotation mark                 0x22  double quote
 .br
 U+201F  double high-reversed-9 quotation mark       0x22  double quote
+.br
+U+2022  bullet                                      0x6F  small letter o
+.br
+U+2028  line separator                              0x0A  newline 
 .br
 U+2033  double prime                                0x22  double quote
 .br

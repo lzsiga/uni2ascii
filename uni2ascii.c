@@ -1,4 +1,4 @@
-/* Time-stamp: <2010-12-12 19:37:04 poser>
+/* Time-stamp: <2011-02-16 10:43:41 poser>
  *
  * Converts UTF-8 Unicode to pure 7-bit ASCII using any of a number
  * of different representations. 
@@ -94,7 +94,7 @@ ShowVersion(FILE *fp)
 
 
 void Copyright (void) {
-  fprintf(stderr,"Copyright (C) 2004-2010 William J. Poser\n");
+  fprintf(stderr,"Copyright (C) 2004-2011 William J. Poser\n");
   fprintf(stderr,"This program is free software; you can redistribute\n\
 it and/or modify it under the terms of version 3 of\n\
 the GNU General Public License as published by the\n\
@@ -175,6 +175,7 @@ void ListExpansions(void){
 
 void ListSingleApproximations(void){
   fprintf(stderr,_("The approximations produced by the -y flag are:\n"));
+  fprintf(stderr,_("          U+0085 NEXT LINE                   -> newline\n"));
   fprintf(stderr,_("          U+00A2 CENT SIGN                   -> C\n"));
   fprintf(stderr,_("          U+00A3 POUND SIGN                  -> #\n"));
   fprintf(stderr,_("          U+00A5 YEN SIGN                    -> Y\n"));
@@ -184,6 +185,7 @@ void ListSingleApproximations(void){
   fprintf(stderr,_("          U+00BC ONE QUARTER                 -> -\n"));
   fprintf(stderr,_("          U+00BD ONE HALF                    -> -\n"));
   fprintf(stderr,_("          U+00BE THREE QUARTERS              -> -\n"));
+  fprintf(stderr,_("          U+00B7 MIDDLE DOT                  -> .\n"));
   fprintf(stderr,_("          U+00C6 CAPITAL LETTER ASH          -> A\n"));
   fprintf(stderr,_("          U+00DF SMALL LETTER SHARP S        -> s\n"));
   fprintf(stderr,_("          U+00E6 SMALL LETTER ASH            -> a\n"));
@@ -195,6 +197,7 @@ void ListSingleApproximations(void){
   fprintf(stderr,_("          U+01F2 MIXED LETTER Dz             -> D\n"));
   fprintf(stderr,_("          U+01F3 SMALL LETTER dz             -> d\n"));
   fprintf(stderr,_("          U+02A6 SMALL LETTER TS DIGRAPH     -> t\n"));
+  fprintf(stderr,_("          U+2028 LINE SEPARATOR              -> newline\n"));
   fprintf(stderr,_("          U+2026 HORIZONTAL ELLIPSIS         -> .\n"));
   fprintf(stderr,_("          U+20AC EURO SIGN                   -> E\n"));
   fprintf(stderr,_("          U+2190 LEFTWARDS ARROW             -> <\n"));
@@ -489,8 +492,15 @@ int AscifyEnclosed(UTF32 c) {
 int AscifyEquiv(UTF32 c) {
   switch (c)
     {
+    case 0x0085:		/* next line */
+    case 0x2028:		/* line separator */ 
+      putchar('\n');
+      break;
     case 0x00AF:
       putchar('-');		/* macron */
+      break;
+    case 0x00B7:		/* middle dot */
+      putchar('.');
       break;
     case 0xFE60:
       putchar(0x26);		/* ampersand */
@@ -535,6 +545,9 @@ int AscifyEquiv(UTF32 c) {
     case 0x201B:
     case 0x2039:
       putchar(0x60);		/* left single quote */
+      break;
+    case 0x2022:		/* Bullet */
+      putchar('o');
       break;
     case 0x2019:
     case 0x203A:

@@ -1,5 +1,17 @@
-2010-12-12  Bill Poser  <poser@khunekcho.khunek>
+2011-02-04  Bill Poser  <poser@khunekcho.khunek>
 
+	* uni2ascii.c (AscifyEquiv): 
+	Now convert U+00B7 middle dot to period.
+	Now convert U+0085 next line and U+2028 line separator to newline.
+
+2011-01-20  Bill Poser  <poser@khunekcho.khunek>
+
+	* uni2ascii.c (AscifyEquiv): 
+	Now convert U+2022 bullet to 'o'.
+
+	
+2010-12-12  Bill Poser  <poser@khunekcho.khunek>
+	Release of version 4.16.
 	* uni2ascii.c (main): 
 	in -a option now translate FType of CHENT to HTMLX to resolve problem of compatibility
 	between the two directions.

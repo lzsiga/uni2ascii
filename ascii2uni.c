@@ -1,8 +1,8 @@
-/* Time-stamp: <2010-08-29 21:36:19 poser>
+/* Time-stamp: <2011-02-16 10:44:02 poser>
  *
  * Convert text containing various 7-bit ASCII escapes to UTF-8 Unicode.
  *
- * Copyright (C) 2005-2010 William J. Poser (billposer@alum.mit.edu)
+ * Copyright (C) 2005-2011 William J. Poser (billposer@alum.mit.edu)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 3 of the GNU General Public License
@@ -86,7 +86,7 @@ ShowVersion(FILE *fp)
 }
 
 void Copyright() {
-  fprintf(stderr,"Copyright (C) 2004-2010 William J. Poser\n");
+  fprintf(stderr,"Copyright (C) 2004-2011 William J. Poser\n");
   fprintf(stderr,"This program is free software; you can redistribute\n\
 it and/or modify it under the terms of version 3 of\n\
 the GNU General Public License as published by the\n\

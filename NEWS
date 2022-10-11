@@ -1,3 +1,10 @@
+2011-02-16 4.17
+Added to uni2ascii the following conversions to nearest ascii equivalent:
+       U+2022 bullet to 'o'
+       U+00B7 middle dot to period
+       U+0085 next line  to newline
+       U+2028 line separator to newline
+
 2010-12-12 4.16
 Ascii2uni Q format now works again.
 Added U+2033 to characters converted to nearest ascii equivalent by uni2ascii B option.
