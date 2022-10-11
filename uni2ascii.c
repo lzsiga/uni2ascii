@@ -1,4 +1,4 @@
-/* Time-stamp: <2010-08-29 21:03:21 poser>
+/* Time-stamp: <2010-12-12 19:37:04 poser>
  *
  * Converts UTF-8 Unicode to pure 7-bit ASCII using any of a number
  * of different representations. 
@@ -525,6 +525,7 @@ int AscifyEquiv(UTF32 c) {
     case 0x201D:
     case 0x201E:
     case 0x201F:
+    case 0x2033:
     case 0x275D:
     case 0x275E:
       putchar(0x22);		/* Double quote */
@@ -2800,6 +2801,7 @@ int main (int ac, char *av[])
 	 fprintf(stderr,"Format specification %s not recognized.\n",optarg);
 	 exit(BADOPTIONARG);
        }
+       if(FType == CHENT) FType = HTMLX;
       break;
     case 'A':
       ListSingleApproximations();

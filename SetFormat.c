@@ -1,4 +1,4 @@
-/* Time-stamp: <2009-08-04 20:25:55 poser>
+/* Time-stamp: <2010-12-12 19:41:51 poser>
  *
  * Copyright (C) 2008 William J. Poser (billposer@alum.mit.edu)
  *
@@ -130,7 +130,7 @@ void SetFormat(char *fs,
       *FType = UPLX;
       return;
     case 'Q':
-      *FType = HTMLX;
+      *FType = CHENT;
       *UseEntitiesP = 1;
       return;
     case 'R':

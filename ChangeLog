@@ -1,3 +1,16 @@
+2010-12-12  Bill Poser  <poser@khunekcho.khunek>
+
+	* uni2ascii.c (main): 
+	in -a option now translate FType of CHENT to HTMLX to resolve problem of compatibility
+	between the two directions.
+
+	* SetFormat.c (SetFormat): 
+	Q now sets FType to CHENT rather than HTMLX.
+
+	
+	* uni2ascii.c (AscifyEquiv): 
+	Added U+2033 to characters converted to nearest ascii equivalent by B option.
+
 2010-08-29  Bill Poser  <poser@khunekcho.khunek>
 
 	* ascii2uni.c: 

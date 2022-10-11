@@ -1,3 +1,7 @@
+2010-12-12 4.16
+Ascii2uni Q format now works again.
+Added U+2033 to characters converted to nearest ascii equivalent by uni2ascii B option.
+
 2010-08-29 4.15
 Renamed endian.h u2a_endian.h to avoid conflict with external endian.h.
 Removed getline() from ascii2uni.c since it is standard as of POSIX2008.
