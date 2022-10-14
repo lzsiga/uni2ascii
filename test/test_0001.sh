@@ -4,8 +4,8 @@ export LC_ALL=C
 
 DirName=$(dirname "$0")
 
-ascii2uni="$DirName/../ascii2uni"
-uni2ascii="$DirName/../uni2ascii"
+ascii2uni="$DirName/../ascii2uni -q"
+uni2ascii="$DirName/../uni2ascii -q"
 
 ToHex() {
     for ((i=0; i<${#1}; ++i)); do
@@ -23,15 +23,29 @@ Test() {
     printf "conv=$Conv, '$FromHex' -> '$ResHex'"
     if [ "$ResHex" = "$ExpHex" ]; then
         echo " OK"
+    elif [ "$ResHex" = "$ExpHex"'0a' ]; then
+        echo " OK (other than adding \\n)"
     else
         echo " *** Bad Expected='$ExpHex'"
     fi
 }
 
-Test U $'\\u00e1\n'     'c3a10a'
-Test L $'\\U000000e1\n' 'c3a10a'
+printf '\n  Simplest case (\\u and \\U) \n\n'
+Test U $'\\u00e1'       'c3a10a'
+Test L $'\\U000000e1'   'c3a10a'
+
+printf '\n  Erroneously merged hexdigit\n\n'
 Test U $'\\u00e1b'      'c3a162'
 Test L $'\\U000000e1b'  'c3a162'
+
+printf '\n  Testing \\U00001f354 (hamburger)\n\n'
+Test U $'\\U00001f354'  'f09f8d94'
+Test L $'\\U00001f354'  'f09f8d94'
+
+# shouldn't generate CESU8 (unless explicitly asked to)
+printf '\n  Testing \\ud83c\\udf54 (surrogate pair)\n\n'
+Test U $'\\ud83c\\udf54' 'f09f8d94'
+Test L $'\\ud83c\\udf54' 'f09f8d94'
 
 exit
 Result:
