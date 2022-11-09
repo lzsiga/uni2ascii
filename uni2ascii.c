@@ -68,12 +68,12 @@ char msg [MSGSIZE];
 #include <gnu/libc-version.h>
 #endif
 
+#include "putu8.h"
+
 void
 ShowVersion(FILE *fp)   
 {
   extern char version[];
-  char *vp;
-  char vnum[11+1];
   struct utsname utsbuf;
 
   fprintf(fp,"%s %s\n",pgname,version);
@@ -213,10 +213,10 @@ void ListSingleApproximations(void){
 /* Swap the byte order of a 4 byte integer */
 
 void
-lswab(unsigned long *val)
+lswab(uint32_t *val)
 {
   union{
-    long l;
+    uint32_t l;
     char c[4];
   } u;
 
@@ -2679,7 +2679,7 @@ int SubsAvailable = 0;
  * search may be advisable. For the time being we just do a linear search.
  */
 
-SubstituteChar(UTF32 c) {
+int SubstituteChar(UTF32 c) {
   int i;
   for(i = 0; i < SubCnt; i++) {
     if(c == SubList[i].u) {
@@ -2693,7 +2693,7 @@ SubstituteChar(UTF32 c) {
   return 0;
 }
 
-AddCustomSubstitution(char *str){
+void AddCustomSubstitution(char *str){
   char *Left;
   char *Right;
   char *Delim;
@@ -2736,7 +2736,6 @@ int main (int ac, char *av[])
 {
 
   UTF32 c;
-  char sc;			/* Unicode char stripped to ASCII equivalent */
   int ch;
   int oc;			/* Command line option flag */
   int ucnt;			/* Index into current UTF* string  */
@@ -2747,7 +2746,6 @@ int main (int ac, char *av[])
   int UTF8Type = 0;
   short BMPSplitP = 0;
   char *fmt = NULL;
-  short dummy;			/* For compatibility with ascii2uni */
 
   unsigned char b1,b2,b3; /* The low three bytes of a 4 byte UTF-32 character */
 
@@ -3250,5 +3248,3 @@ int main (int ac, char *av[])
 #endif
   exit(SUCCESS);
 }
-
-
