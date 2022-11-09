@@ -35,6 +35,7 @@
 #define _(x) (x)
 #endif
 #include "unicode.h"
+#include "putu8.h"
 #include "enttbl.h"
 #include "exitcode.h"
 #include "formats.h"
@@ -62,11 +63,9 @@ char pgname[]="ascii2uni";
 #endif
 
 void
-ShowVersion(FILE *fp)   
+ShowVersion(FILE *fp)
 {
   extern char version[];
-  char *vp;
-  char vnum[11+1];
   struct utsname utsbuf;
 
   fprintf(fp,"%s %s\n",pgname,version);
@@ -199,6 +198,8 @@ static char *Formats [] = {
 
 #define AFMTSIZE (67+2+1+2)
 
+static int ConvBSU(FILE *infp, FILE *outfp);
+
 int main (int ac, char *av[])
 {
   char *SplitFormat = "\\%1[uU]%X%n"; /* This is for BMPSplit */
@@ -249,7 +250,6 @@ int main (int ac, char *av[])
   extern int optopt;
   extern unsigned long GetWordLineNo;
 
-  extern void putu8 (unsigned long);
   extern char * Get_Word(FILE *, int *, int *);
   extern int CountSlots(char *);
   extern void ListFormatArguments(short);
@@ -458,6 +458,11 @@ int main (int ac, char *av[])
 
    LineNo = 0;
 
+   if(FType == BSLU) {
+       ConvBSU(infp, stdout);
+       goto done;
+   }
+
 #if defined(HAVE_GETLINE)
    lbuf= (char *) malloc(len);
    if(lbuf == NULL) {
@@ -541,11 +546,11 @@ int main (int ac, char *av[])
 	 if(sscanf(iptr,SplitFormat,&SplitStr,&num,&NConsumed)) {
 	   if( (num <= 0xFFFF) && (SplitStr[0] == 'U')) {
 	     fprintf(stderr,_("Warning: the code \\U%1$08lX at line %2$lu falls within the BMP.\n"),
-		     num,LineNo);
+		     (long)num,LineNo);
 	   }
 	   if( (num > 0xFFFF) && (SplitStr[0] == 'u')) {
 	     fprintf(stderr,_("Warning: the code \\u%1$08lX at line %2$lu falls outside the BMP.\n"),
-		     num,LineNo);
+		     (long)num,LineNo);
 	   }
 	   putu8(num);
 	   iptr+=NConsumed;
@@ -636,7 +641,7 @@ int main (int ac, char *av[])
 	 /* Need to fill this in */
        }
        else {			/* Default - not BMPSplitP, Q, or byte format */
-	 if((last = sscanf(iptr,afmt,&num,&NConsumed)) > 0) {
+ 	 if((last = sscanf(iptr,afmt,&num,&NConsumed)) > 0) {
 	   if(FType== HTMLX) {
 	     if(*(iptr-1+NConsumed) != ';') {
 	       MicrosoftStyle++;
@@ -696,4 +701,150 @@ done:
      }
    }
    exit(SUCCESS);
+}
+
+typedef struct MiniBuff {
+    short filled;         /* 0..16 */
+    char bytes[16];
+    uint32_t value;
+} MiniBuff;
+
+typedef struct BSU_State {
+    FILE *infp;
+    FILE *outfp;
+    short state;    /* 0 default, 1 after \, 2 after u/U */
+    short nRest;    /* missing hexadecimal digits 0..4 or 0..8 */
+    MiniBuff store;
+    MiniBuff phs;   /* pending high surrogate; filled=6, value=0xd800..0xdbff */
+} BSU_State;
+
+static void FlushMiniBuff(BSU_State *bs, MiniBuff *mb)
+{
+    if (mb->filled) {
+        fwrite(mb->bytes, 1, mb->filled, bs->outfp);
+        mb->filled= 0;
+    }
+}
+
+static void FlushBuffs(BSU_State *bs)
+{
+    if (bs->phs.filled)   FlushMiniBuff(bs, &bs->phs);
+    if (bs->store.filled) FlushMiniBuff(bs, &bs->store);
+}
+
+static void ClearBuffs(BSU_State *bs)
+{
+    bs->phs.filled= 0;
+    bs->store.filled= 0;
+}
+
+static void StorePHS(BSU_State *bs)
+{
+    if (bs->phs.filled) FlushMiniBuff(bs, &bs->phs);
+    bs->phs= bs->store;
+    bs->store.filled= 0;
+}
+
+static void StoreByte(BSU_State *bs, int c)
+{
+    MiniBuff *mb= &bs->store;
+    mb->bytes[mb->filled]= c;
+    ++mb->filled;
+}
+
+static void BSU_ProcessSequence(BSU_State *bs);
+
+static int ConvBSU(FILE *infp, FILE *outfp)
+{
+    int c;
+    const int Start1= '\\';
+    const int Start4= 'u';
+    const int Start8= 'U';
+    BSU_State bsval, *bs= &bsval;
+
+    memset(bs, 0, sizeof *bs);
+    bs->infp= infp;
+    bs->outfp= outfp;
+
+    while ((c= fgetc(infp))!=EOF) {
+        if (bs->state==0 && c==Start1) {        /* '\\' in state0 */
+            bs->state= 1;
+            StoreByte(bs, c);
+
+        } else if (bs->state==1 && c==Start4) { /* 'u' in state1 */
+            bs->state= 2;
+            bs->nRest= 4;
+            bs->store.value= 0;
+            StoreByte(bs, c);
+
+        } else if (bs->state==1 && c==Start8) { /* 'U' in state1 */
+            if (bs->phs.filled) FlushMiniBuff(bs, &bs->phs);
+            bs->state= 2;
+            bs->nRest= 8;
+            bs->store.value= 0;
+            StoreByte(bs, c);
+
+        } else if (bs->state==2 && isxdigit(c)) { /* hexdigit in state2 */
+            unsigned digval;
+            if      (c>='A' && c<='F') digval= c-'A'+10;
+            else if (c>='a' && c<='f') digval= c-'a'+10;
+            else                       digval= c-'0';
+            bs->store.value= (bs->store.value<<4)|digval;
+            StoreByte(bs, c);
+            --bs->nRest;
+            if (bs->nRest==0) {
+                BSU_ProcessSequence(bs);
+            }
+
+        } else {
+            if (bs->store.filled!=0 || bs->phs.filled!=0) {
+                FlushBuffs(bs);
+                bs->state= 0;
+            }
+            fputc(c, bs->outfp);
+        }
+    }
+    return 0;
+}
+
+static void BSU_ProcessSequence(BSU_State *bs)
+{
+    uint32_t charcode= (uint32_t)-1;
+
+    if (bs->store.bytes[1]=='U') {
+        if (bs->phs.filled) FlushMiniBuff(bs, &bs->phs);
+        charcode= bs->store.value;
+
+    } else {
+        if (IsHighSurrogate(bs->store.value)) {
+            if (bs->phs.filled)
+                FlushMiniBuff(bs, &bs->phs);
+            StorePHS(bs);
+            bs->state= 0;
+
+        } else if (IsLowSurrogate(bs->store.value)) {
+            if (bs->phs.filled==0) {
+                FlushMiniBuff(bs, &bs->store);
+                bs->state= 0;
+            } else {
+                charcode=
+                    (bs->phs.value-MIN_HS)*1024 +
+                    (bs->store.value-MIN_LS) +
+                    MIN_SMP;
+            }
+        } else {
+            charcode= bs->store.value;
+        }
+    }
+
+    if (charcode!=(uint32_t)-1) {
+        if (charcode > MAX_SMP ||
+            IsSurrogate(charcode)) {
+            FlushBuffs(bs);
+        } else {
+            fputu8(charcode, bs->outfp);
+        }
+        ClearBuffs(bs);
+        bs->state= 0;
+    }
 }
