@@ -358,8 +358,8 @@ int CountSlots(char *s) {
 
   p = s;
   while( (c=*p++) != '\0') {
-    if(c == '\%') {
-      if(PreviousChar != '\%') cnt++;
+    if(c == '%') {
+      if(PreviousChar != '%') cnt++;
     }
     PreviousChar = c;
   }
