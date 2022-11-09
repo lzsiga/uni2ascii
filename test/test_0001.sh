@@ -31,16 +31,16 @@ Test() {
 }
 
 printf '\n  Simplest case (\\u and \\U) \n\n'
-Test U $'\\u00e1'       'c3a10a'
-Test L $'\\U000000e1'   'c3a10a'
+Test U $'\\u00e1'      'c3a1'
+Test L $'\\U000000e1'  'c3a1'
 
 printf '\n  Erroneously merged hexdigit\n\n'
-Test U $'\\u00e1b'      'c3a162'
-Test L $'\\U000000e1b'  'c3a162'
+Test U $'\\u00e1b'     'c3a162'
+Test L $'\\U000000e1b' 'c3a162'
 
-printf '\n  Testing \\U00001f354 (hamburger)\n\n'
-Test U $'\\U00001f354'  'f09f8d94'
-Test L $'\\U00001f354'  'f09f8d94'
+printf '\n  Testing \\U0001f354 (hamburger)\n\n'
+Test U $'\\U0001f354'  'f09f8d94'
+Test L $'\\U0001f354'  'f09f8d94'
 
 # shouldn't generate CESU8 (unless explicitly asked to)
 printf '\n  Testing \\ud83c\\udf54 (surrogate pair)\n\n'
