@@ -198,7 +198,7 @@ static char *Formats [] = {
 
 #define AFMTSIZE (67+2+1+2)
 
-static int ConvBSU(FILE *infp, FILE *outfp);
+static int ConvBSU(FILE *infp, FILE *outfp, long *pTokenNumber);
 
 int main (int ac, char *av[])
 {
@@ -459,7 +459,7 @@ int main (int ac, char *av[])
    LineNo = 0;
 
    if(FType == BSLU) {
-       ConvBSU(infp, stdout);
+       ConvBSU(infp, stdout, &TokenNumber);
        goto done;
    }
 
@@ -716,6 +716,7 @@ typedef struct BSU_State {
     short nRest;    /* missing hexadecimal digits 0..4 or 0..8 */
     MiniBuff store;
     MiniBuff phs;   /* pending high surrogate; filled=6, value=0xd800..0xdbff */
+    long TokenNumber;
 } BSU_State;
 
 static void FlushMiniBuff(BSU_State *bs, MiniBuff *mb)
@@ -754,7 +755,7 @@ static void StoreByte(BSU_State *bs, int c)
 
 static void BSU_ProcessSequence(BSU_State *bs);
 
-static int ConvBSU(FILE *infp, FILE *outfp)
+static int ConvBSU(FILE *infp, FILE *outfp, long *pTokenNumber)
 {
     int c;
     const int Start1= '\\';
@@ -804,16 +805,19 @@ static int ConvBSU(FILE *infp, FILE *outfp)
             fputc(c, bs->outfp);
         }
     }
+    if (pTokenNumber) *pTokenNumber= bs->TokenNumber;
     return 0;
 }
 
 static void BSU_ProcessSequence(BSU_State *bs)
 {
     uint32_t charcode= (uint32_t)-1;
+    int TokenNumber= 0;
 
     if (bs->store.bytes[1]=='U') {
         if (bs->phs.filled) FlushMiniBuff(bs, &bs->phs);
         charcode= bs->store.value;
+        TokenNumber= 1;
 
     } else {
         if (IsHighSurrogate(bs->store.value)) {
@@ -831,9 +835,11 @@ static void BSU_ProcessSequence(BSU_State *bs)
                     (bs->phs.value-MIN_HS)*1024 +
                     (bs->store.value-MIN_LS) +
                     MIN_SMP;
+                TokenNumber= 2;
             }
         } else {
             charcode= bs->store.value;
+            TokenNumber= 1;
         }
     }
 
@@ -843,6 +849,7 @@ static void BSU_ProcessSequence(BSU_State *bs)
             FlushBuffs(bs);
         } else {
             fputu8(charcode, bs->outfp);
+            bs->TokenNumber += TokenNumber;
         }
         ClearBuffs(bs);
         bs->state= 0;
