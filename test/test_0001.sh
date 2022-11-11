@@ -48,6 +48,3 @@ Test U $'\\ud83c\\udf54' 'f09f8d94'
 Test L $'\\ud83c\\udf54' 'f09f8d94'
 
 exit
-Result:
-conv=U, *** Bad '\u00e1b' -> 'e0b89b', expected 'c3a162'
-conv=L, *** Bad '\U000000e1b' -> 'e0b89b', expected 'c3a162'
